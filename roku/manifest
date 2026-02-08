@@ -1,0 +1,12 @@
+title=IPTV Player
+subtitle=Canais ao vivo
+major_version=1
+minor_version=0
+build_version=1
+mm_icon_focus_hd=pkg:/images/channel-poster_hd.png
+mm_icon_focus_sd=pkg:/images/channel-poster_sd.png
+splash_screen_hd=pkg:/images/splash-screen_hd.png
+splash_screen_fhd=pkg:/images/splash-screen_fhd.png
+splash_color=#000000
+splash_min_time=0
+ui_resolutions=fhd

@@ -65,17 +65,20 @@ class PlayerNotifier extends Notifier<PlayerState> {
         mpv.setProperty('cache', 'yes');
         mpv.setProperty('cache-pause-initial', 'no');
         mpv.setProperty('network-timeout', '10');
+        mpv.setProperty('force-seekable', 'yes');
         mpv.setProperty('stream-lavf-o',
             'reconnect=1,reconnect_streamed=1,reconnect_delay_max=3');
 
         if (isAndroid) {
-          // Android: stable settings for mobile networks
+          // Fire TV / Android TV: hardware decoding + tuned buffering
+          mpv.setProperty('hwdec', 'mediacodec');
+          mpv.setProperty('vo', 'gpu');
           mpv.setProperty('cache-secs', '5');
           mpv.setProperty('cache-pause-wait', '2');
           mpv.setProperty('demuxer-max-bytes', '4MiB');
           mpv.setProperty('demuxer-max-back-bytes', '1MiB');
           mpv.setProperty('demuxer-readahead-secs', '3');
-          mpv.setProperty('vd-lavc-threads', '2');
+          mpv.setProperty('vd-lavc-threads', '4');
         } else {
           // Desktop: aggressive low-latency settings
           mpv.setProperty('cache-secs', '1');
@@ -143,5 +146,29 @@ class PlayerNotifier extends Notifier<PlayerState> {
 
   void setVolume(double volume) {
     _player.setVolume(volume * 100);
+  }
+
+  void playNextChannel(List<Channel> channels) {
+    if (channels.isEmpty || state.currentChannel == null) return;
+    final currentIndex = channels.indexWhere(
+      (ch) => ch.url == state.currentChannel!.url,
+    );
+    if (currentIndex < 0) return;
+    final nextIndex = (currentIndex + 1) % channels.length;
+    playChannel(channels[nextIndex]);
+  }
+
+  void playPreviousChannel(List<Channel> channels) {
+    if (channels.isEmpty || state.currentChannel == null) return;
+    final currentIndex = channels.indexWhere(
+      (ch) => ch.url == state.currentChannel!.url,
+    );
+    if (currentIndex < 0) return;
+    final prevIndex = (currentIndex - 1 + channels.length) % channels.length;
+    playChannel(channels[prevIndex]);
+  }
+
+  void togglePlayPause() {
+    _player.playOrPause();
   }
 }

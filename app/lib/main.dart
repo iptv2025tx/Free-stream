@@ -12,7 +12,13 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   MediaKit.ensureInitialized();
 
-  // Android: start in landscape mode
+  // Fire TV / Android TV: always show D-pad focus highlights
+  if (Platform.isAndroid) {
+    FocusManager.instance.highlightStrategy =
+        FocusHighlightStrategy.alwaysTraditional;
+  }
+
+  // Android: start in landscape mode (Fire TV is always landscape)
   if (Platform.isAndroid) {
     await SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeLeft,

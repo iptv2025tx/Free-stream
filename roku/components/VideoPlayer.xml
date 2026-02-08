@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<component name="VideoPlayer" extends="Group">
+    <interface>
+        <field id="playerClosed" type="boolean" alwaysNotify="true" value="false" />
+        <function name="playVideo" />
+    </interface>
+    <script type="text/brightscript" uri="pkg:/components/VideoPlayer.brs" />
+
+    <children>
+        <!-- Full screen black background -->
+        <Rectangle
+            id="playerBg"
+            width="1920"
+            height="1080"
+            color="0x000000FF" />
+
+        <!-- Roku Video node -->
+        <Video
+            id="video"
+            width="1920"
+            height="1080"
+            translation="[0, 0]"
+            enableUI="false" />
+
+        <!-- OSD overlay - channel name -->
+        <Group id="osdGroup" visible="true">
+            <Rectangle
+                id="osdBg"
+                translation="[30, 30]"
+                width="600"
+                height="60"
+                color="0x00000099"
+                opacity="0.85">
+                <Label
+                    id="osdIcon"
+                    text=">"
+                    translation="[15, 12]"
+                    font="font:MediumSystemFont"
+                    color="0x00D4FFFF" />
+                <Label
+                    id="osdChannelName"
+                    text=""
+                    translation="[45, 12]"
+                    font="font:MediumBoldSystemFont"
+                    color="0xFFFFFFFF"
+                    maxLines="1"
+                    width="530" />
+            </Rectangle>
+            <Rectangle
+                id="osdCategoryBg"
+                translation="[30, 95]"
+                width="400"
+                height="35"
+                color="0x00000077"
+                opacity="0.7">
+                <Label
+                    id="osdCategory"
+                    text=""
+                    translation="[15, 5]"
+                    font="font:SmallSystemFont"
+                    color="0xAAAAAAFF"
+                    maxLines="1"
+                    width="370" />
+            </Rectangle>
+        </Group>
+
+        <!-- OSD hints at bottom -->
+        <Group id="osdHints" visible="true">
+            <Rectangle
+                translation="[560, 1010]"
+                width="800"
+                height="40"
+                color="0x00000088"
+                opacity="0.7">
+                <Label
+                    text="&lt; CH-     OK Pause     CH+ &gt;     Voltar"
+                    translation="[20, 8]"
+                    font="font:SmallSystemFont"
+                    color="0xCCCCCCFF"
+                    width="760"
+                    horizAlign="center" />
+            </Rectangle>
+        </Group>
+
+        <!-- Buffering indicator -->
+        <LayoutGroup
+            id="bufferingGroup"
+            translation="[860, 490]"
+            horizAlignment="center"
+            vertAlignment="center"
+            visible="false"
+            itemSpacings="[10]">
+            <BusySpinner id="bufferSpinner" />
+            <Label
+                id="bufferLabel"
+                text="Carregando..."
+                font="font:SmallSystemFont"
+                color="0xFFFFFFFF" />
+        </LayoutGroup>
+
+        <!-- Error overlay -->
+        <Group id="errorGroup" visible="false">
+            <Rectangle
+                translation="[610, 390]"
+                width="700"
+                height="300"
+                color="0x000000DD"
+                opacity="0.9">
+                <Label
+                    id="errorIcon"
+                    text="!"
+                    translation="[310, 30]"
+                    font="font:LargeBoldSystemFont"
+                    color="0xFF4444FF" />
+                <Label
+                    id="errorTitle"
+                    text="Erro ao reproduzir"
+                    translation="[180, 100]"
+                    font="font:MediumBoldSystemFont"
+                    color="0xFFFFFFFF"
+                    width="340"
+                    horizAlign="center" />
+                <Label
+                    id="errorMessage"
+                    text=""
+                    translation="[50, 150]"
+                    font="font:SmallSystemFont"
+                    color="0xAAAAAAFF"
+                    width="600"
+                    horizAlign="center"
+                    maxLines="3" />
+                <Label
+                    text="Pressione OK para tentar novamente"
+                    translation="[120, 230]"
+                    font="font:SmallSystemFont"
+                    color="0x00D4FFFF"
+                    width="460"
+                    horizAlign="center" />
+            </Rectangle>
+        </Group>
+    </children>
+</component>

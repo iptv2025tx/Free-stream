@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<component name="MainScene" extends="Scene">
+    <script type="text/brightscript" uri="pkg:/components/MainScene.brs" />
+
+    <children>
+        <!-- Dark background -->
+        <Rectangle
+            id="background"
+            width="1920"
+            height="1080"
+            color="0x1A1A2EFF" />
+
+        <!-- Header -->
+        <Rectangle
+            id="header"
+            width="1920"
+            height="80"
+            color="0x16213EFF"
+            translation="[0, 0]">
+            <Label
+                id="appTitle"
+                text="IPTV Player"
+                translation="[40, 18]"
+                font="font:LargeBoldSystemFont"
+                color="0x00D4FFFF" />
+            <Label
+                id="channelCount"
+                text="Carregando..."
+                translation="[300, 26]"
+                font="font:SmallSystemFont"
+                color="0x888888FF" />
+        </Rectangle>
+
+        <!-- Loading spinner -->
+        <LayoutGroup
+            id="loadingGroup"
+            translation="[860, 490]"
+            horizAlignment="center"
+            vertAlignment="center"
+            itemSpacings="[20]">
+            <BusySpinner
+                id="spinner"
+                visible="true"
+                translation="[40, 0]" />
+            <Label
+                id="loadingLabel"
+                text="Carregando canais..."
+                font="font:MediumSystemFont"
+                color="0xCCCCCCFF" />
+        </LayoutGroup>
+
+        <!-- Category list (left panel) -->
+        <Rectangle
+            id="categoryPanel"
+            width="320"
+            height="980"
+            color="0x0F3460FF"
+            translation="[0, 80]"
+            visible="false">
+            <Label
+                id="catTitle"
+                text="Categorias"
+                translation="[20, 15]"
+                font="font:MediumBoldSystemFont"
+                color="0x00D4FFFF" />
+            <LabelList
+                id="categoryList"
+                translation="[20, 60]"
+                itemSize="[280, 48]"
+                numRows="18"
+                itemSpacing="[0, 4]"
+                focusedColor="0xFFFFFFFF"
+                color="0xAAAAAAFF"
+                focusBitmapBlendColor="0x00D4FF80"
+                drawFocusFeedback="true" />
+        </Rectangle>
+
+        <!-- Channel grid (right panel) -->
+        <Rectangle
+            id="gridPanel"
+            width="1580"
+            height="980"
+            color="0x1A1A2E00"
+            translation="[340, 80]"
+            visible="false">
+            <Label
+                id="gridTitle"
+                text=""
+                translation="[20, 10]"
+                font="font:MediumBoldSystemFont"
+                color="0xFFFFFFFF" />
+            <PosterGrid
+                id="channelGrid"
+                translation="[20, 55]"
+                basePosterSize="[220, 160]"
+                itemSpacing="[15, 15]"
+                numColumns="6"
+                numRows="5"
+                caption1NumLines="2"
+                caption1Color="0xDDDDDDFF"
+                caption1Font="font:SmallSystemFont"
+                focusBitmapBlendColor="0x00D4FFFF" />
+        </Rectangle>
+
+        <!-- Video player overlay -->
+        <VideoPlayer
+            id="videoPlayer"
+            visible="false"
+            translation="[0, 0]" />
+    </children>
+</component>

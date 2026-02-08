@@ -26,6 +26,7 @@ class HomeScreen extends ConsumerStatefulWidget {
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   late final VideoController _videoController;
   final _searchController = TextEditingController();
+  final FocusNode _rootFocusNode = FocusNode();
 
   @override
   void initState() {
@@ -33,22 +34,45 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final player = ref.read(playerProvider.notifier).player;
     _videoController = VideoController(player);
 
-    // Android: after first frame, unlock all orientations so the app follows sensor
-    if (Platform.isAndroid) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        SystemChrome.setPreferredOrientations([
-          DeviceOrientation.landscapeLeft,
-          DeviceOrientation.landscapeRight,
-          DeviceOrientation.portraitUp,
-        ]);
-      });
-    }
+    // Fire TV: keep landscape only (no orientation unlock)
+    // Orientation is locked to sensorLandscape in AndroidManifest
   }
 
   @override
   void dispose() {
     _searchController.dispose();
+    _rootFocusNode.dispose();
     super.dispose();
+  }
+
+  KeyEventResult _handleKeyEvent(FocusNode node, KeyEvent event) {
+    if (event is! KeyDownEvent) return KeyEventResult.ignored;
+
+    final key = event.logicalKey;
+    final channels = ref.read(filteredChannelsProvider);
+    final notifier = ref.read(playerProvider.notifier);
+    final hasChannel = ref.read(playerProvider).currentChannel != null;
+
+    // Channel Up/Down: switch channels if playing
+    if (hasChannel && key == LogicalKeyboardKey.channelUp) {
+      notifier.playNextChannel(channels);
+      return KeyEventResult.handled;
+    }
+    if (hasChannel && key == LogicalKeyboardKey.channelDown) {
+      notifier.playPreviousChannel(channels);
+      return KeyEventResult.handled;
+    }
+
+    // Media keys
+    if (hasChannel &&
+        (key == LogicalKeyboardKey.mediaPlayPause ||
+            key == LogicalKeyboardKey.mediaPlay ||
+            key == LogicalKeyboardKey.mediaPause)) {
+      notifier.togglePlayPause();
+      return KeyEventResult.handled;
+    }
+
+    return KeyEventResult.ignored;
   }
 
   bool get _isDesktop =>
@@ -74,45 +98,63 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   Widget _buildDesktopLayout(bool hasActiveChannel) {
-    return Scaffold(
-      body: Row(
-        children: [
-          // Sidebar
-          SizedBox(
-            width: 240,
-            child: Column(
-              children: [
-                _buildSidebarHeader(),
-                const Expanded(child: CategorySidebar()),
-              ],
-            ),
-          ),
-          const VerticalDivider(width: 1),
-          // Channel list
-          Expanded(
-            flex: 3,
-            child: Column(
-              children: [
-                _buildTopBar(),
-                Expanded(child: _buildChannelContent()),
-              ],
-            ),
-          ),
-          // Player panel (desktop only)
-          if (hasActiveChannel) ...[
-            const VerticalDivider(width: 1),
+    // 27px ~= 2.5% overscan safe zone at 1080p (Fire TV standard)
+    const overscan = EdgeInsets.all(27.0);
+
+    return Focus(
+      focusNode: _rootFocusNode,
+      onKeyEvent: _handleKeyEvent,
+      child: Scaffold(
+        body: Padding(
+          padding: Platform.isAndroid ? overscan : EdgeInsets.zero,
+          child: Row(
+          children: [
+            // Sidebar
             SizedBox(
-              width: 420,
-              child: _buildPlayerPanel(),
+              width: 240,
+              child: FocusTraversalGroup(
+                child: Column(
+                  children: [
+                    _buildSidebarHeader(),
+                    const Expanded(child: CategorySidebar()),
+                  ],
+                ),
+              ),
             ),
+            const VerticalDivider(width: 1),
+            // Channel list (main focus area)
+            Expanded(
+              flex: 3,
+              child: FocusTraversalGroup(
+                child: Column(
+                  children: [
+                    _buildTopBar(),
+                    Expanded(child: _buildChannelContent()),
+                  ],
+                ),
+              ),
+            ),
+            // Player panel
+            if (hasActiveChannel) ...[
+              const VerticalDivider(width: 1),
+              SizedBox(
+                width: 420,
+                child: FocusTraversalGroup(
+                  child: _buildPlayerPanel(),
+                ),
+              ),
+            ],
           ],
-        ],
+        ),
+        ),
       ),
     );
   }
 
   Widget _buildMobileLayout(bool hasActiveChannel) {
-    return Scaffold(
+    return Focus(
+      onKeyEvent: _handleKeyEvent,
+      child: Scaffold(
       appBar: AppBar(
         title: const Text(AppConstants.appName),
         actions: [
@@ -157,6 +199,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             ),
         ],
       ),
+    ),
     );
   }
 
@@ -316,24 +359,30 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   Widget _buildGrid(List<Channel> channels) {
     final crossAxisCount = _isDesktop ? 4 : 3;
-    return GridView.builder(
-      padding: const EdgeInsets.all(8),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: crossAxisCount,
-        childAspectRatio: 0.85,
-        crossAxisSpacing: 4,
-        mainAxisSpacing: 4,
+    return FocusTraversalGroup(
+      policy: WidgetOrderTraversalPolicy(),
+      child: GridView.builder(
+        padding: const EdgeInsets.all(8),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: crossAxisCount,
+          childAspectRatio: 0.85,
+          crossAxisSpacing: 4,
+          mainAxisSpacing: 4,
+        ),
+        itemCount: channels.length,
+        itemBuilder: (_, i) => ChannelCard(channel: channels[i]),
       ),
-      itemCount: channels.length,
-      itemBuilder: (_, i) => ChannelCard(channel: channels[i]),
     );
   }
 
   Widget _buildList(List<Channel> channels) {
-    return ListView.builder(
-      padding: const EdgeInsets.symmetric(horizontal: 8),
-      itemCount: channels.length,
-      itemBuilder: (_, i) => ChannelListTile(channel: channels[i]),
+    return FocusTraversalGroup(
+      policy: WidgetOrderTraversalPolicy(),
+      child: ListView.builder(
+        padding: const EdgeInsets.symmetric(horizontal: 8),
+        itemCount: channels.length,
+        itemBuilder: (_, i) => ChannelListTile(channel: channels[i]),
+      ),
     );
   }
 
@@ -344,15 +393,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
     return Column(
       children: [
-        // Video
-        AspectRatio(
-          aspectRatio: 16 / 9,
-          child: Video(
-            controller: _videoController,
-            controls: AdaptiveVideoControls,
+        // Video (tap to fullscreen, no controls to avoid focus trap)
+        GestureDetector(
+          onTap: _openFullScreen,
+          child: AspectRatio(
+            aspectRatio: 16 / 9,
+            child: ExcludeFocus(
+              child: Video(
+                controller: _videoController,
+                controls: (state) => const SizedBox.shrink(),
+              ),
+            ),
           ),
         ),
-        // Channel info
+        // Channel info + actions
         if (channel != null)
           Padding(
             padding: const EdgeInsets.all(16),
@@ -374,6 +428,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 Row(
                   children: [
                     FilledButton.tonalIcon(
+                      autofocus: true,
                       onPressed: _openFullScreen,
                       icon: const Icon(Icons.fullscreen),
                       label: const Text('Tela cheia'),
