@@ -1,7 +1,7 @@
 ' MainScene - entry point
 ' Based on SceneGraph Master Sample
 sub Init()
-    m.top.backgroundColor = "0x662D91"
+    m.top.backgroundColor = "0x000000"
     m.top.backgroundUri = ""
     m.loadingIndicator = m.top.FindNode("loadingIndicator")
     InitScreenStack()
