@@ -13,7 +13,7 @@
             title="SepulnationTV"
             showOptions="false"
             showClock="false"
-            translation="[0, 60]"
+            translation="[0, 0]"
         />
         <Label
             id="loadingIndicator"
