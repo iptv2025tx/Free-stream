@@ -10,6 +10,7 @@
     <children>
         <Overhang
             id="overhang"
+            title="SepulnationTV"
             showOptions="false"
             showClock="false"
             translation="[0, 60]"
