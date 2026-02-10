@@ -121,12 +121,9 @@ sub addChannelNode(parentNode as object, ch as object)
     node = parentNode.createChild("ContentNode")
     node.title = ch.name
     node.url = ch.url
-    if ch.logo <> invalid
-        if ch.logo <> ""
-            node.hdPosterUrl = ch.logo
-            node.sdPosterUrl = ch.logo
-        end if
-    end if
+    defaultLogo = "https://raw.githubusercontent.com/tenorioabsgit/images/refs/heads/main/sepulnation.png"
+    node.hdPosterUrl = defaultLogo
+    node.sdPosterUrl = defaultLogo
     node.description = ch.group
     node.streamFormat = getStreamFormat(ch.url)
 end sub
