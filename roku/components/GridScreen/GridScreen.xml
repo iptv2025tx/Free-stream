@@ -5,6 +5,7 @@
         <field id="rowItemFocused" type="array" alias="rowList.rowItemFocused" />
         <field id="rowItemSelected" type="array" alias="rowList.rowItemSelected" />
     </interface>
+    <script type="text/brightscript" uri="pkg:/source/utils.brs" />
     <script type="text/brightscript" uri="GridScreen.brs" />
 
     <children>

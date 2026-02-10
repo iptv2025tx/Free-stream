@@ -8,12 +8,38 @@ sub LoadPlaylist()
 
     ' Download M3U playlist
     xfer = CreateObject("roUrlTransfer")
+    port = CreateObject("roMessagePort")
+    xfer.SetMessagePort(port)
     xfer.SetUrl(url)
     xfer.SetCertificatesFile("common:/certs/ca-bundle.crt")
+    xfer.InitClientCertificates()
     xfer.EnableHostVerification(false)
     xfer.EnablePeerVerification(false)
 
-    response = xfer.GetToString()
+    print "SepulnationTV: Downloading playlist from " + url
+
+    if not xfer.AsyncGetToString()
+        print "SepulnationTV: Failed to start download"
+        return
+    end if
+
+    ' Wait up to 30 seconds for response
+    msg = Wait(30000, port)
+    if msg = invalid
+        print "SepulnationTV: Download timed out"
+        xfer.AsyncCancel()
+        return
+    end if
+
+    responseCode = msg.GetResponseCode()
+    print "SepulnationTV: Response code = " + Str(responseCode)
+
+    if responseCode <> 200
+        print "SepulnationTV: HTTP error " + Str(responseCode)
+        return
+    end if
+
+    response = msg.GetString()
     if response = invalid or response = "" then return
 
     ' Parse M3U
@@ -40,6 +66,7 @@ sub LoadPlaylist()
         end for
     end for
 
+    print "SepulnationTV: Loaded " + IntToStr(channels.Count()) + " channels in " + IntToStr(groups.Count()) + " groups"
     m.top.content = rootNode
 end sub
 
