@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<component name="RowListItemComponent" extends="Group">
+    <interface>
+        <field id="itemContent" type="node" onChange="OnContentSet" />
+    </interface>
+    <script type="text/brightscript" uri="RowListItemComponent.brs" />
+    <children>
+        <Poster
+            id="poster"
+            loadDisplayMode="scaleToFit"
+            width="320"
+            height="180"
+            loadWidth="320"
+            loadHeight="180"
+        />
+    </children>
+</component>

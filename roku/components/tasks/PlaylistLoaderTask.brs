@@ -1,29 +1,26 @@
+' PlaylistLoaderTask - loads and parses M3U playlist
+' Based on MainLoaderTask pattern from SceneGraph Master Sample
 sub Init()
-    m.top.functionName = "LoadPlaylist"
+    m.top.functionName = "GetContent"
 end sub
 
-sub LoadPlaylist()
+sub GetContent()
     url = m.top.playlistUrl
     if url = invalid or url = "" then return
 
-    ' Download M3U playlist
+    ' request the playlist from the API
     xfer = CreateObject("roUrlTransfer")
     port = CreateObject("roMessagePort")
     xfer.SetMessagePort(port)
-    xfer.SetUrl(url)
     xfer.SetCertificatesFile("common:/certs/ca-bundle.crt")
     xfer.InitClientCertificates()
-    xfer.EnableHostVerification(false)
-    xfer.EnablePeerVerification(false)
-
-    print "SepulnationTV: Downloading playlist from " + url
+    xfer.SetUrl(url)
 
     if not xfer.AsyncGetToString()
         print "SepulnationTV: Failed to start download"
         return
     end if
 
-    ' Wait up to 30 seconds for response
     msg = Wait(30000, port)
     if msg = invalid
         print "SepulnationTV: Download timed out"
@@ -31,44 +28,66 @@ sub LoadPlaylist()
         return
     end if
 
-    responseCode = msg.GetResponseCode()
-    print "SepulnationTV: Response code = " + Str(responseCode)
-
-    if responseCode <> 200
-        print "SepulnationTV: HTTP error " + Str(responseCode)
+    if msg.GetResponseCode() <> 200
+        print "SepulnationTV: HTTP error " + Str(msg.GetResponseCode())
         return
     end if
 
     response = msg.GetString()
     if response = invalid or response = "" then return
 
-    ' Parse M3U
+    ' parse the M3U and build a tree of ContentNodes to populate the GridScreen
     lines = SplitLines(response)
     channels = ParseM3U(lines)
     groups = GroupChannels(channels)
 
-    ' Build ContentNode tree
-    rootNode = CreateObject("roSGNode", "ContentNode")
+    rootChildren = []
 
-    ' "Todos" category
-    allCat = rootNode.CreateChild("ContentNode")
-    allCat.title = "Todos (" + IntToStr(channels.Count()) + ")"
+    ' first row: all channels
+    allRow = {}
+    allRow.title = "Todos (" + IntToStr(channels.Count()) + ")"
+    allRow.children = []
     for each ch in channels
-        AddChannelNode(allCat, ch)
+        allRow.children.Push(GetChannelData(ch))
     end for
+    rootChildren.Push(allRow)
 
-    ' Per-group categories
+    ' per-group rows
     for each grp in groups
-        catNode = rootNode.CreateChild("ContentNode")
-        catNode.title = grp.name + " (" + IntToStr(grp.channels.Count()) + ")"
+        row = {}
+        row.title = grp.name + " (" + IntToStr(grp.channels.Count()) + ")"
+        row.children = []
         for each ch in grp.channels
-            AddChannelNode(catNode, ch)
+            row.children.Push(GetChannelData(ch))
         end for
+        rootChildren.Push(row)
     end for
 
-    print "SepulnationTV: Loaded " + IntToStr(channels.Count()) + " channels in " + IntToStr(groups.Count()) + " groups"
-    m.top.content = rootNode
+    ' set up root ContentNode to represent rowList on GridScreen
+    contentNode = CreateObject("roSGNode", "ContentNode")
+    contentNode.Update({ children: rootChildren }, true)
+
+    print "SepulnationTV: Loaded " + IntToStr(channels.Count()) + " channels"
+    ' populate content field - observer is invoked at that moment
+    m.top.content = contentNode
 end sub
+
+function GetChannelData(ch as Object) as Object
+    item = {}
+    item.title = ch.name
+    item.description = ch.group
+    item.url = ch.url
+    item.streamFormat = GetStreamFormat(ch.url)
+
+    defaultLogo = "https://raw.githubusercontent.com/tenorioabsgit/images/refs/heads/main/sepulnation.png"
+    if ch.logo <> invalid and ch.logo <> ""
+        item.hdPosterUrl = ch.logo
+    else
+        item.hdPosterUrl = defaultLogo
+    end if
+
+    return item
+end function
 
 function ParseM3U(lines as Object) as Object
     channels = CreateObject("roArray", 0, true)
@@ -83,7 +102,7 @@ function ParseM3U(lines as Object) as Object
             chGroup = ""
             chLogo = ""
 
-            ' Find last comma to extract channel name
+            ' find last comma to extract channel name
             commaPos = 0
             ci = Len(txtLine)
             while ci >= 1
@@ -101,7 +120,7 @@ function ParseM3U(lines as Object) as Object
             chGroup = GetAttrValue(txtLine, "group-title")
             chLogo = GetAttrValue(txtLine, "tvg-logo")
 
-            ' Find stream URL on next non-empty, non-comment line
+            ' find stream URL on next non-empty, non-comment line
             chUrl = ""
             j = i + 1
             while j < total
@@ -130,24 +149,6 @@ function ParseM3U(lines as Object) as Object
 
     return channels
 end function
-
-sub AddChannelNode(parentNode as Object, ch as Object)
-    node = parentNode.CreateChild("ContentNode")
-    node.title = ch.name
-    node.url = ch.url
-    node.description = ch.group
-
-    defaultLogo = "https://raw.githubusercontent.com/tenorioabsgit/images/refs/heads/main/sepulnation.png"
-    if ch.logo <> invalid and ch.logo <> ""
-        node.hdPosterUrl = ch.logo
-        node.sdPosterUrl = ch.logo
-    else
-        node.hdPosterUrl = defaultLogo
-        node.sdPosterUrl = defaultLogo
-    end if
-
-    node.streamFormat = GetStreamFormat(ch.url)
-end sub
 
 function GroupChannels(channels as Object) as Object
     groupMap = CreateObject("roAssociativeArray")

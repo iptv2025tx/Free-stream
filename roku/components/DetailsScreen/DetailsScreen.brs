@@ -1,44 +1,68 @@
+' DetailsScreen - channel details view
+' Based on DetailsScreen from SceneGraph Master Sample
 sub Init()
-    m.poster = m.top.FindNode("poster")
-    m.titleLabel = m.top.FindNode("titleLabel")
-    m.categoryLabel = m.top.FindNode("categoryLabel")
-    m.streamInfoLabel = m.top.FindNode("streamInfoLabel")
+    m.top.ObserveField("visible", "OnVisibleChange")
+    m.top.ObserveField("itemFocused", "OnItemFocusedChanged")
     m.buttons = m.top.FindNode("buttons")
+    m.poster = m.top.FindNode("poster")
+    m.description = m.top.FindNode("descriptionLabel")
+    m.categoryLabel = m.top.FindNode("categoryLabel")
+    m.titleLabel = m.top.FindNode("titleLabel")
+
+    ' create buttons
+    result = []
+    for each button in ["Assistir"]
+        result.Push({ title: button })
+    end for
+    m.buttons.content = ContentListToSimpleNode(result)
 end sub
 
-sub OnContentSet()
-    content = m.top.content
-    if content = invalid then return
+sub OnVisibleChange()
+    if m.top.visible = true
+        m.buttons.SetFocus(true)
+        m.top.itemFocused = m.top.jumpToItem
+    end if
+end sub
 
+sub SetDetailsContent(content as Object)
+    m.poster.uri = content.hdPosterUrl
     m.titleLabel.text = content.title
-
-    if content.description <> invalid and content.description <> ""
-        m.categoryLabel.text = CleanCategoryTitle(content.description)
+    if content.description <> invalid
+        m.description.text = content.description
     else
-        m.categoryLabel.text = ""
+        m.description.text = ""
     end if
-
-    if content.hdPosterUrl <> invalid and content.hdPosterUrl <> ""
-        m.poster.uri = content.hdPosterUrl
-    end if
-
-    ' Stream info
     fmt = "HLS"
     if content.streamFormat <> invalid and content.streamFormat <> ""
         fmt = UCase(content.streamFormat)
     end if
-    m.streamInfoLabel.text = "Formato: " + fmt
+    m.categoryLabel.text = fmt
+end sub
 
-    ' Button content
-    buttonContent = CreateObject("roSGNode", "ContentNode")
-    playBtn = buttonContent.CreateChild("ContentNode")
-    playBtn.title = "Assistir agora"
-    m.buttons.content = buttonContent
+sub OnJumpToItem()
+    content = m.top.content
+    if content <> invalid and m.top.jumpToItem >= 0 and content.GetChildCount() > m.top.jumpToItem
+        m.top.itemFocused = m.top.jumpToItem
+    end if
+end sub
 
-    m.buttons.SetFocus(true)
+sub OnItemFocusedChanged(event as Object)
+    focusedItem = event.GetData()
+    content = m.top.content.GetChild(focusedItem)
+    SetDetailsContent(content)
 end sub
 
 function OnKeyEvent(key as String, press as Boolean) as Boolean
-    if not press then return false
-    return false
+    result = false
+    if press
+        currentItem = m.top.itemFocused
+        if key = "left"
+            m.top.jumpToItem = currentItem - 1
+            result = true
+        else if key = "right"
+            m.top.jumpToItem = currentItem + 1
+            result = true
+        end if
+    end if
+    return result
 end function

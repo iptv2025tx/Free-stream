@@ -1,18 +1,28 @@
-' DetailsScreenLogic.brs - Details screen handling
-' Based on SceneGraph Master Sample pattern
+' DetailsScreenLogic - from SceneGraph Master Sample
 
-sub ShowDetailsScreen(channelNode as Object)
-    m.detailsScreen = CreateObject("roSGNode", "DetailsScreen")
-    m.detailsScreen.content = channelNode
-    m.detailsScreen.ObserveField("buttonSelected", "OnDetailsButtonSelected")
-    m.selectedChannel = channelNode
-    ShowScreen(m.detailsScreen)
+sub ShowDetailsScreen(content as Object, selectedItem as Integer)
+    detailsScreen = CreateObject("roSGNode", "DetailsScreen")
+    detailsScreen.content = content
+    detailsScreen.jumpToItem = selectedItem
+    detailsScreen.ObserveField("visible", "OnDetailsScreenVisibilityChanged")
+    detailsScreen.ObserveField("buttonSelected", "OnButtonSelected")
+    ShowScreen(detailsScreen)
 end sub
 
-sub OnDetailsButtonSelected()
-    buttonIndex = m.detailsScreen.buttonSelected
+sub OnButtonSelected(event)
+    details = event.GetRoSGNode()
+    content = details.content
+    buttonIndex = event.getData()
+    selectedItem = details.itemFocused
     if buttonIndex = 0
-        ' "Assistir agora" button
-        ShowVideoScreen(m.selectedChannel)
+        ShowVideoScreen(content, selectedItem)
+    end if
+end sub
+
+sub OnDetailsScreenVisibilityChanged(event as Object)
+    visible = event.GetData()
+    detailsScreen = event.GetRoSGNode()
+    if visible = false
+        m.GridScreen.jumpToRowItem = [m.selectedIndex[0], detailsScreen.itemFocused]
     end if
 end sub

@@ -1,3 +1,18 @@
+' Helper function convert AA to Node (from SceneGraph Master Sample)
+function ContentListToSimpleNode(contentList as Object, nodeType = "ContentNode" as String) as Object
+    result = CreateObject("roSGNode", nodeType)
+    if result <> invalid
+        for each itemAA in contentList
+            item = CreateObject("roSGNode", nodeType)
+            item.SetFields(itemAA)
+            result.AppendChild(item)
+        end for
+    end if
+    return result
+end function
+
+' M3U parsing helpers
+
 function IntToStr(num as Integer) as String
     s = Str(num)
     if Left(s, 1) = " " then s = Mid(s, 2)
@@ -72,21 +87,6 @@ function GetStreamFormat(videoUrl as String) as String
     return "hls"
 end function
 
-function CleanCategoryTitle(categoryTitle as String) as String
-    if categoryTitle = invalid or categoryTitle = "" then return ""
-    parenPos = 0
-    for c = 1 to Len(categoryTitle)
-        if Mid(categoryTitle, c, 1) = "("
-            parenPos = c
-            exit for
-        end if
-    end for
-    if parenPos > 1
-        return TrimStr(Left(categoryTitle, parenPos - 2))
-    end if
-    return categoryTitle
-end function
-
 sub SortByName(arr as Object)
     n = arr.Count()
     if n < 2 then return
@@ -100,12 +100,3 @@ sub SortByName(arr as Object)
         end for
     end for
 end sub
-
-function FindNodeByUrl(content as Object, url as String) as Object
-    for each row in content.GetChildren(-1, 0)
-        for each item in row.GetChildren(-1, 0)
-            if item.url = url then return item
-        end for
-    end for
-    return invalid
-end function

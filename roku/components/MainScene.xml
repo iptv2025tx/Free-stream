@@ -1,32 +1,29 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<component name="MainScene" extends="Scene" backgroundColor="0x0D0D0DFF">
-    <!-- UILogic scripts (SceneGraph Master Sample pattern) -->
-    <script type="text/brightscript" uri="pkg:/source/utils.brs" />
+<?xml version="1.0" encoding="UTF-8"?>
+
+<component name="MainScene" extends="Scene">
     <script type="text/brightscript" uri="MainScene.brs" />
     <script type="text/brightscript" uri="UILogic/ScreenStackLogic.brs" />
     <script type="text/brightscript" uri="UILogic/ContentTaskLogic.brs" />
     <script type="text/brightscript" uri="UILogic/GridScreenLogic.brs" />
-    <script type="text/brightscript" uri="UILogic/DetailsScreenLogic.brs" />
     <script type="text/brightscript" uri="UILogic/VideoPlayerLogic.brs" />
-
+    <script type="text/brightscript" uri="UILogic/DetailsScreenLogic.brs" />
     <children>
-        <!-- Loading indicator (shown during content fetch) -->
-        <LayoutGroup
+        <Overhang
+            id="overhang"
+            showOptions="false"
+            showClock="false"
+            translation="[0, 60]"
+        />
+        <Label
             id="loadingIndicator"
-            translation="[860, 490]"
-            horizAlignment="center"
-            vertAlignment="center"
-            itemSpacings="[20]"
-            visible="true">
-            <BusySpinner visible="true" translation="[40, 0]" />
-            <Label
-                text="SepulnationTV"
-                font="font:LargeBoldSystemFont"
-                color="0x00D4FFFF" />
-            <Label
-                text="Carregando canais..."
-                font="font:MediumSystemFont"
-                color="0x555555FF" />
-        </LayoutGroup>
+            text="Carregando canais..."
+            width="1920"
+            height="1080"
+            translation="[0, 0]"
+            horizAlign="center"
+            vertAlign="center"
+            visible="false"
+            font="font:MediumBoldSystemFont"
+        />
     </children>
 </component>

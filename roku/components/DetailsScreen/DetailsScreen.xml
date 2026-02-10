@@ -1,102 +1,67 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
+
 <component name="DetailsScreen" extends="Group" initialFocus="buttons">
-    <interface>
-        <field id="content" type="node" onChange="OnContentSet" />
-        <field id="buttonSelected" type="integer" alwaysNotify="true"
-            alias="buttons.itemSelected" />
-    </interface>
-    <script type="text/brightscript" uri="pkg:/source/utils.brs" />
     <script type="text/brightscript" uri="DetailsScreen.brs" />
-
+    <script type="text/brightscript" uri="pkg:/source/utils.brs" />
+    <interface>
+        <field id="content" type="node" />
+        <field id="jumpToItem" type="integer" onChange="OnJumpToItem" value="0" alwaysNotify="true" />
+        <field id="itemFocused" type="integer" alwaysNotify="true" />
+        <field id="buttonSelected" type="integer" alias="buttons.itemSelected" />
+    </interface>
     <children>
-        <!-- Dark background -->
-        <Rectangle
-            width="1920"
-            height="1080"
-            color="0x0D0D0DFF" />
-
-        <!-- Back hint -->
-        <Label
-            translation="[90, 25]"
-            text="< Voltar"
-            font="font:SmallSystemFont"
-            color="0x444444FF" />
-
-        <!-- Large poster -->
-        <Poster
-            id="poster"
-            translation="[90, 100]"
-            width="400"
-            height="400"
-            loadDisplayMode="scaleToFit"
-            loadingBitmapOpacity="0.0"
-            failedBitmapOpacity="0.0" />
-
-        <!-- Accent line under poster -->
-        <Rectangle
-            translation="[90, 508]"
-            width="400"
-            height="3"
-            color="0x00D4FFFF" />
-
-        <!-- Channel info -->
-        <Label
-            id="titleLabel"
-            translation="[550, 120]"
-            text=""
-            font="font:LargeBoldSystemFont"
-            color="0xEEEEEEFF"
-            maxLines="2"
-            width="1200" />
-
-        <Label
-            id="categoryLabel"
-            translation="[550, 200]"
-            text=""
-            font="font:MediumSystemFont"
-            color="0x666666FF"
-            maxLines="1"
-            width="800" />
-
-        <!-- Live indicator -->
-        <Group translation="[550, 260]">
-            <Rectangle
-                width="10"
-                height="10"
-                translation="[0, 7]"
-                color="0xFF3333FF" />
-            <Label
-                text="AO VIVO"
-                translation="[18, 0]"
-                font="font:SmallBoldSystemFont"
-                color="0xFF3333FF" />
-        </Group>
-
-        <!-- Separator -->
-        <Rectangle
-            translation="[550, 310]"
-            width="1200"
-            height="1"
-            color="0x1A1A1AFF" />
-
-        <!-- Stream info -->
-        <Label
-            id="streamInfoLabel"
-            translation="[550, 335]"
-            text=""
-            font="font:SmallSystemFont"
-            color="0x555555FF"
-            maxLines="2"
-            width="1200" />
-
-        <!-- Action buttons -->
-        <LabelList
-            id="buttons"
-            translation="[550, 420]"
-            numRows="2"
-            itemSize="[400, 60]"
-            color="0xEEEEEEFF"
-            focusedColor="0x00D4FFFF"
-            focusBitmapBlendColor="0x222222FF" />
+        <LayoutGroup
+            translation="[1166, 154]"
+            layoutDirection="horiz"
+            horizAlignment="right"
+            itemSpacings="[40]">
+            <LayoutGroup
+                itemSpacings="[14, 10]"
+                layoutDirection="vert">
+                <Rectangle
+                    width="357"
+                    height="201"
+                    color="0xFFFFFF00">
+                    <Poster
+                        id="poster"
+                        width="357"
+                        loadWidth="357"
+                        height="201"
+                        loadHeight="201"
+                        loadDisplayMode="scaleToFit"
+                    />
+                </Rectangle>
+                <Label
+                    id="titleLabel"
+                    width="357"
+                    wrap="false"
+                    horizAlign="right"
+                />
+                <Label
+                    id="categoryLabel"
+                    width="357"
+                    wrap="false"
+                    horizAlign="right"
+                />
+            </LayoutGroup>
+            <Group>
+                <LabelList
+                    id="buttons"
+                    numRows="3"
+                    itemSpacing="[0, 10]"
+                    itemSize="[593, 48]"
+                />
+                <LayoutGroup
+                    itemSpacings="[40]"
+                    translation="[0, 208]">
+                    <Label
+                        id="descriptionLabel"
+                        wrap="true"
+                        maxLines="6"
+                        width="593"
+                    />
+                </LayoutGroup>
+            </Group>
+        </LayoutGroup>
     </children>
 </component>

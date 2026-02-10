@@ -1,31 +1,45 @@
-' VideoPlayerLogic.brs - Video playback flow
-' Based on SceneGraph Master Sample pattern
+' VideoPlayerLogic - from SceneGraph Master Sample
+' Uses built-in Video node directly (no custom VideoScreen)
 
-sub ShowVideoScreen(channelNode as Object)
-    m.videoScreen = CreateObject("roSGNode", "VideoScreen")
-    m.videoScreen.ObserveField("state", "OnVideoScreenStateChange")
-    ShowScreen(m.videoScreen)
-    m.videoScreen.callFunc("PlayVideo", channelNode)
-end sub
+sub ShowVideoScreen(rowContent as Object, selectedItem as Integer)
+    m.videoPlayer = CreateObject("roSGNode", "Video")
+    m.selectedIndex[1] = selectedItem
 
-sub OnVideoScreenStateChange()
-    ' Handle video errors or completion at scene level if needed
-end sub
-
-sub PlayNextChannel()
-    if m.allChannels.Count() = 0 then return
-    m.currentChannelIndex = m.currentChannelIndex + 1
-    if m.currentChannelIndex >= m.allChannels.Count()
-        m.currentChannelIndex = 0
+    if selectedItem <> 0
+        numOfChildren = rowContent.GetChildCount()
+        children = rowContent.GetChildren(numOfChildren - selectedItem, selectedItem)
+        childrenClone = []
+        for each child in children
+            childrenClone.Push(child.Clone(false))
+        end for
+        rowNode = CreateObject("roSGNode", "ContentNode")
+        rowNode.Update({ children: childrenClone }, true)
+        m.videoPlayer.content = rowNode
+    else
+        m.videoPlayer.content = rowContent.Clone(true)
     end if
-    m.videoScreen.callFunc("PlayVideo", m.allChannels[m.currentChannelIndex])
+
+    m.videoPlayer.contentIsPlaylist = true
+    ShowScreen(m.videoPlayer)
+    m.videoPlayer.control = "play"
+    m.videoPlayer.ObserveField("state", "OnVideoPlayerStateChange")
+    m.videoPlayer.ObserveField("visible", "OnVideoVisibleChange")
 end sub
 
-sub PlayPreviousChannel()
-    if m.allChannels.Count() = 0 then return
-    m.currentChannelIndex = m.currentChannelIndex - 1
-    if m.currentChannelIndex < 0
-        m.currentChannelIndex = m.allChannels.Count() - 1
+sub OnVideoPlayerStateChange()
+    state = m.videoPlayer.state
+    if state = "error" or state = "finished"
+        CloseScreen(m.videoPlayer)
     end if
-    m.videoScreen.callFunc("PlayVideo", m.allChannels[m.currentChannelIndex])
+end sub
+
+sub OnVideoVisibleChange()
+    if m.videoPlayer.visible = false and m.top.visible = true
+        currentIndex = m.videoPlayer.contentIndex
+        m.videoPlayer.control = "stop"
+        m.videoPlayer.content = invalid
+        screen = GetCurrentScreen()
+        screen.SetFocus(true)
+        screen.jumpToItem = currentIndex + m.selectedIndex[1]
+    end if
 end sub
