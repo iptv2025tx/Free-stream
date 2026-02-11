@@ -334,6 +334,13 @@ def extract_group_from_extinf(extinf_line):
     return match.group(1) if match else ''
 
 
+def extract_logo_from_extinf(extinf_line):
+    """Extrai o tvg-logo de uma linha EXTINF."""
+    import re
+    match = re.search(r'tvg-logo="([^"]*)"', extinf_line)
+    return match.group(1) if match else ''
+
+
 def update_extinf_group(extinf_line, new_group):
     """Atualiza o group-title em uma linha EXTINF."""
     import re
@@ -391,13 +398,15 @@ def parse_m3u_to_channels(content, source_name, region):
         elif line.startswith('http') and current_extinf:
             name = current_extinf.split(',')[-1].strip() if ',' in current_extinf else 'Unknown'
             original_group = extract_group_from_extinf(current_extinf)
+            logo = extract_logo_from_extinf(current_extinf)
             channels.append({
                 'name': name,
                 'url': line,
                 'extinf': current_extinf,
                 'source': source_name,
                 'region': region,
-                'original_group': original_group
+                'original_group': original_group,
+                'logo': logo
             })
             current_extinf = None
 
@@ -432,7 +441,8 @@ def generate_mjh_channels(data, region, source_name):
             'extinf': extinf,
             'source': source_name,
             'region': region,
-            'original_group': group
+            'original_group': group,
+            'logo': logo
         })
 
     return channels
@@ -535,18 +545,29 @@ def collect_all_channels():
     if EXTRA_CHANNELS:
         print(f"\n  Adicionando {len(EXTRA_CHANNELS)} canais extras (VH1/MTV)...")
         for ch in EXTRA_CHANNELS:
-            extinf = f'#EXTINF:-1 tvg-name="{ch["name"]}",{ch["name"]}'
+            logo = ch.get('logo', '')
+            extinf = f'#EXTINF:-1 tvg-name="{ch["name"]}" tvg-logo="{logo}",{ch["name"]}'
             all_channels.append({
                 'name': ch['name'],
                 'url': ch['url'],
                 'extinf': extinf,
                 'source': ch.get('source', 'Extra'),
                 'region': ch.get('region', 'INT'),
-                'original_group': ''
+                'original_group': '',
+                'logo': logo
             })
 
     print(f"\nTotal coletados: {len(all_channels)}")
     all_channels = deduplicate_channels(all_channels)
+
+    # Filtrar canais sem logo
+    before_filter = len(all_channels)
+    all_channels = [ch for ch in all_channels if ch.get('logo', '').strip()]
+    removed_no_logo = before_filter - len(all_channels)
+    if removed_no_logo:
+        print(f"  Canais sem logo removidos: {removed_no_logo}")
+    print(f"  Canais com logo: {len(all_channels)}")
+
     return all_channels
 
 
