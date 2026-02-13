@@ -560,13 +560,10 @@ def collect_all_channels():
     print(f"\nTotal coletados: {len(all_channels)}")
     all_channels = deduplicate_channels(all_channels)
 
-    # Filtrar canais sem logo
-    before_filter = len(all_channels)
-    all_channels = [ch for ch in all_channels if ch.get('logo', '').strip()]
-    removed_no_logo = before_filter - len(all_channels)
-    if removed_no_logo:
-        print(f"  Canais sem logo removidos: {removed_no_logo}")
-    print(f"  Canais com logo: {len(all_channels)}")
+    with_logo = sum(1 for ch in all_channels if ch.get('logo', '').strip())
+    without_logo = len(all_channels) - with_logo
+    print(f"  Canais com logo: {with_logo}")
+    print(f"  Canais sem logo: {without_logo}")
 
     return all_channels
 
