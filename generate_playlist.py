@@ -84,6 +84,26 @@ SOURCES = {
         'region': 'BR',
     },
 
+    # Plex Free Live TV (BuddyChewChew)
+    'plex_us': {
+        'name': 'Plex TV US',
+        'url': 'https://raw.githubusercontent.com/BuddyChewChew/app-m3u-generator/refs/heads/main/playlists/plex_us.m3u',
+        'type': 'direct_m3u',
+        'region': 'US',
+    },
+    'plex_ca': {
+        'name': 'Plex TV CA',
+        'url': 'https://raw.githubusercontent.com/BuddyChewChew/app-m3u-generator/refs/heads/main/playlists/plex_ca.m3u',
+        'type': 'direct_m3u',
+        'region': 'CA',
+    },
+    'plex_gb': {
+        'name': 'Plex TV UK',
+        'url': 'https://raw.githubusercontent.com/BuddyChewChew/app-m3u-generator/refs/heads/main/playlists/plex_gb.m3u',
+        'type': 'direct_m3u',
+        'region': 'GB',
+    },
+
     # EUA (apsattv.com)
     'roku_us': {
         'name': 'Roku Channel',
@@ -97,6 +117,268 @@ SOURCES = {
         'type': 'direct_m3u',
         'region': 'US',
     },
+    'xumo_us': {
+        'name': 'XUMO',
+        'url': 'https://www.apsattv.com/xumo.m3u',
+        'type': 'direct_m3u',
+        'region': 'US',
+    },
+    'localnow_us': {
+        'name': 'Local Now',
+        'url': 'https://www.apsattv.com/localnow.m3u',
+        'type': 'direct_m3u',
+        'region': 'US',
+    },
+    'distrotv': {
+        'name': 'DistroTV',
+        'url': 'https://www.apsattv.com/distro.m3u',
+        'type': 'direct_m3u',
+        'region': 'US',
+    },
+    'vizio_us': {
+        'name': 'Vizio TV',
+        'url': 'https://www.apsattv.com/vizio.m3u',
+        'type': 'direct_m3u',
+        'region': 'US',
+    },
+
+    # EUA (BuddyChewChew)
+    'tubi_us': {
+        'name': 'Tubi TV',
+        'url': 'https://raw.githubusercontent.com/BuddyChewChew/app-m3u-generator/refs/heads/main/playlists/tubi_all.m3u',
+        'type': 'direct_m3u',
+        'region': 'US',
+    },
+    'stirr_us': {
+        'name': 'Stirr TV',
+        'url': 'https://raw.githubusercontent.com/BuddyChewChew/app-m3u-generator/refs/heads/main/playlists/stirr_all.m3u',
+        'type': 'direct_m3u',
+        'region': 'US',
+    },
+    'plutotv_us': {
+        'name': 'Pluto TV US',
+        'url': 'https://raw.githubusercontent.com/BuddyChewChew/app-m3u-generator/refs/heads/main/playlists/plutotv_us.m3u',
+        'type': 'direct_m3u',
+        'region': 'US',
+    },
+
+    # EUA (GitHub agregadores)
+    'iptv_org_us': {
+        'name': 'IPTV-Org US',
+        'url': 'https://iptv-org.github.io/iptv/countries/us.m3u',
+        'type': 'direct_m3u',
+        'region': 'US',
+    },
+    'freetv_us': {
+        'name': 'Free-TV USA',
+        'url': 'https://raw.githubusercontent.com/Free-TV/IPTV/master/playlists/playlist_usa.m3u8',
+        'type': 'direct_m3u',
+        'region': 'US',
+    },
+
+    # Canada (apsattv.com)
+    'lg_ca': {
+        'name': 'LG Channels CA',
+        'url': 'https://www.apsattv.com/calg.m3u',
+        'type': 'direct_m3u',
+        'region': 'CA',
+    },
+
+    # Canada (BuddyChewChew)
+    'plutotv_ca': {
+        'name': 'Pluto TV CA',
+        'url': 'https://raw.githubusercontent.com/BuddyChewChew/app-m3u-generator/refs/heads/main/playlists/plutotv_ca.m3u',
+        'type': 'direct_m3u',
+        'region': 'CA',
+    },
+
+    # Canada (GitHub agregadores)
+    'iptv_org_ca': {
+        'name': 'IPTV-Org CA',
+        'url': 'https://iptv-org.github.io/iptv/countries/ca.m3u',
+        'type': 'direct_m3u',
+        'region': 'CA',
+    },
+    'freetv_ca': {
+        'name': 'Free-TV Canada',
+        'url': 'https://raw.githubusercontent.com/Free-TV/IPTV/master/playlists/playlist_canada.m3u8',
+        'type': 'direct_m3u',
+        'region': 'CA',
+    },
+
+    # UK (apsattv.com)
+    'lg_gb': {
+        'name': 'LG Channels UK',
+        'url': 'https://www.apsattv.com/gblg.m3u',
+        'type': 'direct_m3u',
+        'region': 'GB',
+    },
+
+    # UK (BuddyChewChew)
+    'plutotv_gb': {
+        'name': 'Pluto TV UK',
+        'url': 'https://raw.githubusercontent.com/BuddyChewChew/app-m3u-generator/refs/heads/main/playlists/plutotv_gb.m3u',
+        'type': 'direct_m3u',
+        'region': 'GB',
+    },
+
+    # UK (GitHub agregadores)
+    'iptv_org_gb': {
+        'name': 'IPTV-Org UK',
+        'url': 'https://iptv-org.github.io/iptv/countries/uk.m3u',
+        'type': 'direct_m3u',
+        'region': 'GB',
+    },
+    'freetv_gb': {
+        'name': 'Free-TV UK',
+        'url': 'https://raw.githubusercontent.com/Free-TV/IPTV/master/playlists/playlist_uk.m3u8',
+        'type': 'direct_m3u',
+        'region': 'GB',
+    },
+
+    # Brasil (apsattv.com) - adicional
+    'vidaa_br': {
+        'name': 'Vidaa TV',
+        'url': 'https://www.apsattv.com/vidaa.m3u',
+        'type': 'direct_m3u',
+        'region': 'BR',
+    },
+
+    # Australia (apsattv.com)
+    'samsung_au': {
+        'name': 'Samsung TV Plus AU',
+        'url': 'https://www.apsattv.com/ssungaus.m3u',
+        'type': 'direct_m3u',
+        'region': 'AU',
+    },
+    'lg_au': {
+        'name': 'LG Channels AU',
+        'url': 'https://www.apsattv.com/aulg.m3u',
+        'type': 'direct_m3u',
+        'region': 'AU',
+    },
+    '9fast_au': {
+        'name': '9Fast AU',
+        'url': 'https://www.apsattv.com/9fast.m3u',
+        'type': 'direct_m3u',
+        'region': 'AU',
+    },
+    'koganplus_au': {
+        'name': 'Koganplus AU',
+        'url': 'https://www.apsattv.com/koganplus.m3u',
+        'type': 'direct_m3u',
+        'region': 'AU',
+    },
+
+    # Australia (BuddyChewChew / GitHub)
+    'plex_au': {
+        'name': 'Plex TV AU',
+        'url': 'https://raw.githubusercontent.com/BuddyChewChew/app-m3u-generator/refs/heads/main/playlists/plex_au.m3u',
+        'type': 'direct_m3u',
+        'region': 'AU',
+    },
+    'iptv_org_au': {
+        'name': 'IPTV-Org AU',
+        'url': 'https://iptv-org.github.io/iptv/countries/au.m3u',
+        'type': 'direct_m3u',
+        'region': 'AU',
+    },
+    'freetv_au': {
+        'name': 'Free-TV Australia',
+        'url': 'https://raw.githubusercontent.com/Free-TV/IPTV/master/playlists/playlist_australia.m3u8',
+        'type': 'direct_m3u',
+        'region': 'AU',
+    },
+
+    # Nova Zelandia (apsattv.com)
+    'samsung_nz': {
+        'name': 'Samsung TV Plus NZ',
+        'url': 'https://www.apsattv.com/ssungnz.m3u',
+        'type': 'direct_m3u',
+        'region': 'NZ',
+    },
+    'lg_nz': {
+        'name': 'LG Channels NZ',
+        'url': 'https://www.apsattv.com/nzlg.m3u',
+        'type': 'direct_m3u',
+        'region': 'NZ',
+    },
+
+    # Nova Zelandia (BuddyChewChew / GitHub)
+    'plex_nz': {
+        'name': 'Plex TV NZ',
+        'url': 'https://raw.githubusercontent.com/BuddyChewChew/app-m3u-generator/refs/heads/main/playlists/plex_nz.m3u',
+        'type': 'direct_m3u',
+        'region': 'NZ',
+    },
+    'iptv_org_nz': {
+        'name': 'IPTV-Org NZ',
+        'url': 'https://iptv-org.github.io/iptv/countries/nz.m3u',
+        'type': 'direct_m3u',
+        'region': 'NZ',
+    },
+
+    # Portugal (apsattv.com)
+    'samsung_pt': {
+        'name': 'Samsung TV Plus PT',
+        'url': 'https://www.apsattv.com/ssungpor.m3u',
+        'type': 'direct_m3u',
+        'region': 'PT',
+    },
+    'lg_pt': {
+        'name': 'LG Channels PT',
+        'url': 'https://www.apsattv.com/ptlg.m3u',
+        'type': 'direct_m3u',
+        'region': 'PT',
+    },
+
+    # Portugal (GitHub)
+    'm3upt': {
+        'name': 'M3UPT Portugal',
+        'url': 'https://raw.githubusercontent.com/LITUATUI/M3UPT/main/M3U/M3UPT.m3u',
+        'type': 'direct_m3u',
+        'region': 'PT',
+    },
+    'iptv_org_pt': {
+        'name': 'IPTV-Org PT',
+        'url': 'https://iptv-org.github.io/iptv/countries/pt.m3u',
+        'type': 'direct_m3u',
+        'region': 'PT',
+    },
+    'freetv_pt': {
+        'name': 'Free-TV Portugal',
+        'url': 'https://raw.githubusercontent.com/Free-TV/IPTV/master/playlists/playlist_portugal.m3u8',
+        'type': 'direct_m3u',
+        'region': 'PT',
+    },
+
+    # Lusofonia Africana (GitHub agregadores)
+    'iptv_org_ao': {
+        'name': 'IPTV-Org Angola',
+        'url': 'https://iptv-org.github.io/iptv/countries/ao.m3u',
+        'type': 'direct_m3u',
+        'region': 'AO',
+    },
+    'iptv_org_mz': {
+        'name': 'IPTV-Org Moçambique',
+        'url': 'https://iptv-org.github.io/iptv/countries/mz.m3u',
+        'type': 'direct_m3u',
+        'region': 'MZ',
+    },
+    'iptv_org_cv': {
+        'name': 'IPTV-Org Cabo Verde',
+        'url': 'https://iptv-org.github.io/iptv/countries/cv.m3u',
+        'type': 'direct_m3u',
+        'region': 'CV',
+    },
+
+    # Lingua Portuguesa - todos os paises (GitHub)
+    'iptv_org_por': {
+        'name': 'IPTV-Org Português',
+        'url': 'https://iptv-org.github.io/iptv/languages/por.m3u',
+        'type': 'direct_m3u',
+        'region': 'BR',
+    },
 
     # Samsung TV Plus (i.mjh.nz)
     'samsung_us': {'name': 'Samsung TV Plus US', 'region': 'us', 'type': 'mjh'},
@@ -105,7 +387,7 @@ SOURCES = {
 }
 
 MJH_CHANNELS_URL = 'https://i.mjh.nz/SamsungTVPlus/.channels.json.gz'
-TARGET_REGIONS = ['BR', 'US', 'GB', 'CA', 'us', 'gb', 'ca']
+TARGET_REGIONS = ['BR', 'US', 'GB', 'CA', 'AU', 'NZ', 'PT', 'AO', 'MZ', 'CV', 'us', 'gb', 'ca']
 OUTPUT_FILE = 'playlist.m3u'
 
 # Canais extras (VH1 e MTV) adicionados manualmente
@@ -143,6 +425,21 @@ EXTRA_CHANNELS = [
     {'name': 'MTV Hits', 'url': 'http://myott.top/stream/DT6QU63K5VX/302.m3u8', 'region': 'INT', 'source': 'myott'},
     # Notícias BR - canais extras
     {'name': 'BandNews TV', 'url': 'https://evpp.mm.uol.com.br/geob_band/bandnewstv/playlist.m3u8', 'region': 'BR', 'source': 'Band'},
+    # Rock/Metal - Pluto TV US
+    {'name': 'XITE Rock x Metal', 'url': 'http://cfd-v4-service-channel-stitcher-use1-1.prd.pluto.tv/stitch/hls/channel/623a1b5188ecdc0007c9ef5a/master.m3u8?appName=web&appVersion=unknown&deviceDNT=0&deviceId=rock&deviceMake=Chrome&deviceModel=web&deviceType=web&deviceVersion=unknown&includeExtendedEvents=false&serverSideAds=false', 'region': 'US', 'source': 'Pluto TV US'},
+    {'name': 'Vevo Rock', 'url': 'http://cfd-v4-service-channel-stitcher-use1-1.prd.pluto.tv/stitch/hls/channel/61d4b38226b8a50007fe03a6/master.m3u8?appName=web&appVersion=unknown&deviceDNT=0&deviceId=rock&deviceMake=Chrome&deviceModel=web&deviceType=web&deviceVersion=unknown&includeExtendedEvents=false&serverSideAds=false', 'region': 'US', 'source': 'Pluto TV US'},
+    {'name': 'Live Music', 'url': 'http://cfd-v4-service-channel-stitcher-use1-1.prd.pluto.tv/stitch/hls/channel/5873fc21cad696fb37aa9054/master.m3u8?appName=web&appVersion=unknown&deviceDNT=0&deviceId=rock&deviceMake=Chrome&deviceModel=web&deviceType=web&deviceVersion=unknown&includeExtendedEvents=false&serverSideAds=false', 'region': 'US', 'source': 'Pluto TV US'},
+    # Rock/Metal - Stingray (Stirr OTT)
+    {'name': 'Stingray Classic Rock', 'url': 'https://stirr.ott-channels.stingray.com/101/master.m3u8', 'region': 'US', 'source': 'Stirr/Stingray'},
+    {'name': 'Stingray Rock Alternative', 'url': 'https://stirr.ott-channels.stingray.com/102/master.m3u8', 'region': 'US', 'source': 'Stirr/Stingray'},
+    # Rock/Metal - Stingray (Lotus/Samsung)
+    {'name': 'Stingray Classic Rock INT', 'url': 'https://lotus.stingray.com/manifest/ose-101ads-montreal/samsungtvplus/master.m3u8', 'region': 'INT', 'source': 'Stingray/Samsung'},
+    {'name': 'Stingray Rock Alternative INT', 'url': 'https://lotus.stingray.com/manifest/ose-102ads-montreal/samsungtvplus/master.m3u8', 'region': 'INT', 'source': 'Stingray/Samsung'},
+    # Rock/Metal - Canais independentes
+    {'name': 'Rock TV Romania', 'url': 'https://tv.broadcasting.ro/rocktv/85c83a80-4f71-4f2d-a8d6-43f676896bcb.m3u8', 'region': 'RO', 'source': 'broadcasting.ro'},
+    {'name': 'Rock TV Macedonia', 'url': 'https://stream.nasatv.com.mk/rocktv/hls/rocktv_live.m3u8', 'region': 'MK', 'source': 'nasatv.com.mk'},
+    {'name': 'DJING Electro Rock', 'url': 'https://www.djing.com/tv/s-28676-05-electro-rock.m3u8', 'region': 'FR', 'source': 'DJing.com'},
+    {'name': 'Now Rock AU', 'url': 'https://lightningnow90-samsungau.amagi.tv/playlist.m3u8', 'region': 'AU', 'source': 'Now Music/Amagi'},
 ]
 
 # Mapeamento de região para nome do país
@@ -155,6 +452,12 @@ REGION_TO_COUNTRY = {
     'gb': 'UK',
     'CA': 'Canada',
     'ca': 'Canada',
+    'AU': 'Australia',
+    'NZ': 'New Zealand',
+    'PT': 'Português',
+    'AO': 'Português',
+    'MZ': 'Português',
+    'CV': 'Português',
 }
 
 # Classificação de canais brasileiros por categoria
@@ -312,6 +615,15 @@ def get_final_group(original_group, region, channel_name=''):
     import re
     if re.search(r'\bmtv\b', name_lower):
         return 'MTV'
+
+    # Rock/Metal é categoria global (qualquer região)
+    rock_keywords = [
+        'rock x metal', 'rock alternative', 'classic rock', 'electro rock',
+        'now rock', 'vevo rock', 'live music', 'rock tv', 'rock show',
+        'mtv rocks', 'rock!',
+    ]
+    if any(kw in name_lower for kw in rock_keywords):
+        return 'Rock'
 
     original_lower = original_group.lower() if original_group else ''
 
