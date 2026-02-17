@@ -483,9 +483,8 @@ BR_CATEGORIES = [
     ]),
     ('BR Notícias', [
         'cnn brasil', 'jovem pan', 'record news', 'sbt news', 'bm&c news',
-        'bloomberg', 'euronews', 'news now', 'cbs news', 'usa today',
-        'newsmax', '011 news', 'canal uol', 'norte news', 'bandnews',
-        'tv 247', 'times brasil', 'cnbc', 'canal rural', 'notícias agrícolas',
+        '011 news', 'canal uol', 'norte news', 'bandnews',
+        'tv 247', 'times brasil', 'canal rural', 'notícias agrícolas',
         'noticias agricolas', 'new brasil', 'terraviva', 'veja mais',
     ]),
     ('BR Esportes', [
@@ -562,11 +561,7 @@ NEWS_RELEVANCE = [
     'sbt news',
     'bm&c news',
     'times brasil',
-    'cnbc',
-    'bloomberg',
     'canal uol',
-    'euronews',
-    'cnn portugal',
     'canal rural',
     'terraviva',
     'new brasil',
@@ -575,9 +570,6 @@ NEWS_RELEVANCE = [
     'noticias agricolas',
     'tv 247',
     '011 news',
-    'cbs news',
-    'usa today',
-    'newsmax',
     'norte news',
 ]
 
